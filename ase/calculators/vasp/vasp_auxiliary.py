@@ -427,7 +427,7 @@ class xdat2traj:
             self.atoms = self.atoms[self.calc.resort]
         self.energies = self.calc.read_energy(all=True)[1]
         # Forces are read with the atoms sorted using resort
-        self.forces = self.calc.read_forces(self.atoms, all=True)
+        self.forces = self.calc.read_forces(all=True)
 
     def convert(self):
         lines = open(self.xdatcar).readlines()
@@ -444,8 +444,6 @@ class xdat2traj:
         scaled_pos = []
         for line in lines:
             if iatom == len(self.atoms):
-                if step == 0:
-                    self.out.write_header(self.atoms[self.calc.resort])
                 scaled_pos = np.array(scaled_pos)
                 # Now resort the positions to match self.atoms
                 self.atoms.set_scaled_positions(scaled_pos[self.calc.resort])
@@ -466,8 +464,6 @@ class xdat2traj:
 
         # Write also the last image
         # I'm sure there is also more clever fix...
-        if step == 0:
-            self.out.write_header(self.atoms[self.calc.resort])
         scaled_pos = np.array(scaled_pos)[self.calc.resort]
         self.atoms.set_scaled_positions(scaled_pos)
         calc = SinglePointCalculator(self.atoms,
