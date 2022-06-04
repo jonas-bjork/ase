@@ -1289,7 +1289,7 @@ def check_atoms(atoms: ase.Atoms) -> None:
     """
 
     # Loop through all check functions
-    for check in (check_atoms_type, check_cell, check_pbc):
+    for check in (check_atoms_type, check_cell):
         check(atoms)
 
 
@@ -1302,17 +1302,6 @@ def check_cell(atoms: ase.Atoms) -> None:
             "The lattice vectors are zero! "
             "This is the default value - please specify a "
             "unit cell.")
-
-
-def check_pbc(atoms: ase.Atoms) -> None:
-    """Check if any boundaries are not PBC, as VASP
-    cannot handle non-PBC.
-    Raises CalculatorSetupError.
-    """
-    if not atoms.pbc.all():
-        raise calculator.CalculatorSetupError(
-            "Vasp cannot handle non-periodic boundaries. "
-            "Please enable all PBC, e.g. atoms.pbc=True")
 
 
 def check_atoms_type(atoms: ase.Atoms) -> None:
